@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "d525b099-e846-4598-b2ed-85a6eef51be8",
+		"name": "SpringSecurity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad4a3769-7bf5-4598-bf53-b4fbdacc436f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user1\",\n    \"email\": \"user1@random.edu\",\n    \"password\": \"abc123\",\n    \"name\": \"John Doe\",\n    \"phone\": \"1234567789\",\n    \"businessTitle\": \"Student\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/register",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate as User (Fetch Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6c5258a2-70fe-4d91-9dc1-64cfc96627e8",
+								"exec": [
+									"var token = responseBody;",
+									"postman.setEnvironmentVariable(\"userToken\", token.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"user1\",\n\t\"password\": \"abc123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/authenticate",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Ping as User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/userping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"userping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Ping as User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{userToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/adminping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"adminping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fd99df03-edcd-4fa5-ba50-00a35634c9f3",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"userid\", jsonData.id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user2\",\n    \"email\": \"user2@admin.edu\",\n    \"password\": \"abc123\",\n    \"name\": \"Jane Doe\",\n    \"phone\": \"9876543321\",\n    \"businessTitle\": \"Admin\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/register",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate as Admin (Fetch Token)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "04a416c9-93bb-4f0b-b5ca-fbf2ee7c8310",
+								"exec": [
+									"var token = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"adminToken\", token.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"user2\",\n\t\"password\": \"abc123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/authenticate",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Ping as Admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/userping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"userping"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Ping as Admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{adminToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/users/adminping",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"adminping"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
